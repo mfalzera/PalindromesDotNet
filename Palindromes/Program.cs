@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Palindromes
 {
@@ -52,6 +53,20 @@ namespace Palindromes
             return forward == reverse;
         }
 
+        /// <summary>
+        /// Removes the special characters from the given string.
+        /// </summary>
+        /// <returns>The string without the special characters.</returns>
+        /// <param name="value">A valid string.</param>
+        public static string RemoveSpecialCharacters(string value)
+        {
+            Regex regex = new Regex("(?:[^a-z0-9 ]|(?<=['\"])s)", 
+                                    RegexOptions.IgnoreCase | 
+                                    RegexOptions.CultureInvariant | 
+                                    RegexOptions.Compiled);
+            return regex.Replace(value, String.Empty);
+        }
+
         static void Main(string[] args)
         {
             string[] arrayOfWords =
@@ -64,7 +79,7 @@ namespace Palindromes
 
             string[] arrayOfSentences =
             {
-                "Noel sees Leon.",
+                "Noel sees ?+= Leon.",
                 "This will not work"
             };
 
@@ -78,6 +93,12 @@ namespace Palindromes
             foreach (var value in arrayOfSentences)
             {
                 Console.WriteLine("{0} = {1}", value, IsSentencePalindrome(value));
+            }
+
+            // loop through the array of sentences and remove the special characters
+            foreach (var value in arrayOfSentences)
+            {
+                Console.WriteLine("{0} = {1}", value, RemoveSpecialCharacters(value));
             }
 
             Console.WriteLine();
